@@ -91,6 +91,7 @@ class MapViewDirections extends Component {
 			region,
 			precision = 'low',
 			timePrecision = 'none',
+			unitSystem = 'metric',
 			channel,
 		} = props;
 
@@ -174,7 +175,7 @@ class MapViewDirections extends Component {
 			}
 
 			return (
-				this.fetchRoute(directionsServiceBaseUrl, origin, waypoints, destination, apikey, mode, language, region, precision, timePrecisionString, channel)
+				this.fetchRoute(directionsServiceBaseUrl, origin, waypoints, destination, apikey, mode, language, region, precision, timePrecisionString, unitSystem, channel)
 					.then(result => {
 						return result;
 					})
@@ -227,7 +228,7 @@ class MapViewDirections extends Component {
 			});
 	}
 
-	fetchRoute(directionsServiceBaseUrl, origin, waypoints, destination, apikey, mode, language, region, precision, timePrecision, channel) {
+	fetchRoute(directionsServiceBaseUrl, origin, waypoints, destination, apikey, mode, language, region, precision, timePrecision, unitSystem, channel) {
 
 		// Define the URL to call. Only add default parameters to the URL if it's a string.
 		let url = directionsServiceBaseUrl;
@@ -235,6 +236,9 @@ class MapViewDirections extends Component {
 			url += `?origin=${origin}&waypoints=${waypoints}&destination=${destination}&key=${apikey}&mode=${mode.toLowerCase()}&language=${language}&region=${region}`;
 			if(timePrecision){
 				url+=`&departure_time=${timePrecision}`;
+			}
+			if (unitSystem) {
+				url+=`&units=${unitSystem}`;
 			}
 			if(channel){
 				url+=`&channel=${channel}`;
@@ -351,6 +355,7 @@ MapViewDirections.propTypes = {
 	region: PropTypes.string,
 	precision: PropTypes.oneOf(['high', 'low']),
 	timePrecision: PropTypes.oneOf(['now', 'none']),
+	unitSystem: PropTypes.oneOf(['metric', 'imperial']),
 	channel: PropTypes.string,
 };
 
